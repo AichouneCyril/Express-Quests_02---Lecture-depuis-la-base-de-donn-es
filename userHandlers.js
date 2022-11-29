@@ -84,10 +84,38 @@ const deleteUser = (req, res) => {
     });
 };
 
+const getGetUsers = (req, res) => {
+  let sql = "select * from users";
+  const sqlValues = [];
+
+  if (req.query.language != null) {
+    sql += " where language = ?";
+    sqlValues.push(req.query.color);
+
+    if (req.query.city != null) {
+      sql += " and city = ?";
+      sqlValues.push(req.query.city);
+    }
+  } else if (req.query.language != null) {
+    sql += " where language = ?";
+    sqlValues.push(req.query.language);
+  }
+
+  database
+    .query("select * from users")
+    .then(([user]) => {
+      console.log(user);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 module.exports = {
   getUsers,
   getUserById,
   postUser,
   updateUser,
   deleteUser,
+  getGetUsers,
 };
